@@ -84,11 +84,11 @@ def decode(_img: Image) -> str:
 if __name__ == '__main__':
     arguments = sys.argv
 
-    assert arguments.count("-m") == 1 or arguments.count("-M") == 1 if arguments.count("-E") >= 1 else arguments.count(
-        "-m") == 0 and arguments.count("-M") == 0, 'Expected argument -m was not given when trying to encode'
     assert arguments.count("-m") >= 1 and arguments.count("-M") < 1 or arguments.count("-m") < 1 and arguments.count(
         "-M") >= 1 if arguments.count("-E") else arguments.count(
         "-m") == 0 and arguments.count("-M") == 0, "Only one of the parameters -m or -M can be given at the same time"
+    assert arguments.count("-m") == 1 or arguments.count("-M") == 1 if arguments.count("-E") >= 1 else arguments.count(
+        "-m") == 0 and arguments.count("-M") == 0, 'Expected argument -m was not given when trying to encode'
     assert arguments.count("-E") >= 1 and arguments.count("-D") < 1 or arguments.count("-D") >= 1 and arguments.count(
         "-E") < 1, "Only one of the parameters -E or -D must be given to indicate if encoding or decoding."
     assert arguments.count("-i") == 1, 'Expected argument -i was not given' if arguments.count(
@@ -103,7 +103,7 @@ if __name__ == '__main__':
     if arguments.count("-M") >= 1:
         message = open(arguments[arguments.index("-M") + 1], "r").read()
 
-    if arguments.count("-E") == 1:
+    if arguments.count("-e") == 1:
         check_nbr_header_pixels = math.ceil(len(message) / packet_size) + 1
         nbr_pixels = image.width * image.height
         assert nbr_pixels >= check_nbr_header_pixels + len(
@@ -117,5 +117,5 @@ if __name__ == '__main__':
             img.save(arguments[arguments.index("-n") + 1] + ".png")
         else:
             img.save(str(random.randint(11111111, 99999999)) + ".png")
-    elif arguments.count("-D") == 1:
+    elif arguments.count("-d") == 1:
         print(decode(image))
